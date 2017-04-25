@@ -120,6 +120,7 @@ void remover_matricula(aluno* aux, int matricula)
             remover_colecao(c, i);
             printf("-- Aluno removido --\n");
             flag = 1;
+            break;
         }
     }
     if(flag == 0)
@@ -144,6 +145,7 @@ void remover_nome(aluno* aux, char* nome)
             remover_colecao(c, i);
             printf("-- Aluno removido --\n");
             flag = 1;
+            break;
         }
     }
     if(flag == 0)
@@ -165,6 +167,7 @@ void remover_media(aluno* aux, float media)
             remover_colecao(c, i);
             printf("-- Aluno removido --\n");
             flag = 1;
+            break;
         }
     }
     if(flag == 0)
@@ -180,12 +183,12 @@ int main()
     int i, num, matricula, op, loop=1;
     char nome[15];
     float media;
-    
+
     printf("Entre com o numero de alunos: ");
     scanf("%d", &num);
 
     c = criar_colecao(num);
-    
+
     if(c != NULL)
     {
 
@@ -208,19 +211,19 @@ int main()
                 system("pause");
                 return 0;
             }
-    
+
             fflush(stdin);
         }
-    
+
         mostrar_aluno(a);
-    
+
         while(loop != 0)
         {
-    
+
             printf("\n-- Pesquisar por --\n");
             printf("(1)matricula\t(2)nome\t(3)media\n-> ");
             scanf("%d", &op);
-    
+
             switch(op)
             {
                 case 1:
@@ -245,15 +248,15 @@ int main()
             printf("\nDeseja fazer outra pesquisa?\n 1 - continua\t0 - termina\n-> ");
             scanf("%d", &loop);
         }
-    
+
         loop = 1;
-    
+
         while(loop != 0)
         {
             printf("\n\t-- Remover por --\n");
             printf("(1)matricula\t (2)nome\t (3)media\n->");
             scanf("%d", &op);
-    
+
             switch(op)
             {
                 case 1:
@@ -278,8 +281,20 @@ int main()
             printf("\nDeseja fazer outra pesquisa?\n 1 - continua\t0 - termina\n-> ");
             scanf("%d", &loop);
         }
-    
+
         mostrar_aluno(a);
+
+        int x;
+
+        x = destruir_colecao(c);
+        if(x == 1)
+        {
+            printf("Colecao destruida!");
+        }
+        else
+        {
+            printf("Colecao nao destruida!");
+        }
     }
     else
     {
@@ -287,7 +302,9 @@ int main()
         system("pause");
         return 0;
     }
-    
+
+
+
     system("pause");
     return 0;
 }

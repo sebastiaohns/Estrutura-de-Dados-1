@@ -73,7 +73,7 @@ int destruir_colecao(col* c)
     {
         free(c->vet);
         free(c);
-        return TRUE;
+        return 1;
     }
-    return FALSE;
+    return 0;
 }
