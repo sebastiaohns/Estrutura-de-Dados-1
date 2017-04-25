@@ -37,7 +37,7 @@ void mostrar_aluno(aluno *aux)
     {
         aux = (aluno*)mostrar_colecao(c, i);
 
-        printf("Matricula %d\tNome %s\tMedia %.1f\n", aux->matricula, aux->nome, aux->media);
+        printf("Matricula: %d\tNome: %s\tMedia: %.1f\n", aux->matricula, aux->nome, aux->media);
     }
 }
 
@@ -52,9 +52,8 @@ void pesquisar_matricula(aluno* aux, int matricula)
         if(aux->matricula == matricula)
         {
             printf("-- Aluno encontrado --\n");
-            printf("Matricula %d\tNome %s\tMedia %.1f\n", aux->matricula, aux->nome, aux->media);
+            printf("Matricula: %d\tNome: %s\tMedia: %.1f\n", aux->matricula, aux->nome, aux->media);
             flag = 1;
-            break;
         }
     }
     if(flag == 0)
@@ -77,9 +76,8 @@ void pesquisar_nome(aluno* aux, char* nome)
         if(saux != NULL)
         {
             printf("-- Aluno encontrado --\n");
-            printf("Matricula %d\tNome %s\tMedia %.1f\n", aux->matricula, aux->nome, aux->media);
+            printf("Matricula: %d\tNome: %s\tMedia: %.1f\n", aux->matricula, aux->nome, aux->media);
             flag = 1;
-            break;
         }
     }
     if(flag == 0)
@@ -99,9 +97,8 @@ void pesquisar_media(aluno* aux, float media)
         if(aux->media == media)
         {
             printf("-- Aluno encontrado --\n");
-            printf("Matricula %d\tNome %s\tMedia %.1f\n", aux->matricula, aux->nome, aux->media);
+            printf("Matricula: %d\tNome: %s\tMedia: %.1f\n", aux->matricula, aux->nome, aux->media);
             flag = 1;
-            break;
         }
     }
     if(flag == 0)
@@ -123,7 +120,6 @@ void remover_matricula(aluno* aux, int matricula)
             remover_colecao(c, i);
             printf("-- Aluno removido --\n");
             flag = 1;
-            break;
         }
     }
     if(flag == 0)
@@ -148,7 +144,6 @@ void remover_nome(aluno* aux, char* nome)
             remover_colecao(c, i);
             printf("-- Aluno removido --\n");
             flag = 1;
-            break;
         }
     }
     if(flag == 0)
@@ -170,7 +165,6 @@ void remover_media(aluno* aux, float media)
             remover_colecao(c, i);
             printf("-- Aluno removido --\n");
             flag = 1;
-            break;
         }
     }
     if(flag == 0)
@@ -179,99 +173,121 @@ void remover_media(aluno* aux, float media)
     }
 }
 
-void main(void)
+int main()
 {
     aluno *a, *b;
 
-    int i;
-
-    c = criar_colecao(3);
-
-    printf("-- Inserir Alunos --\n");
-    for(i=0; i<3; i++)
-    {
-        a = criar_aluno();
-        a->matricula = i+1;
-        printf("Nome -> ");
-        scanf("%s", &a->nome);
-        printf("Media -> ");
-        scanf("%f", &a->media);
-        inserir_colecao(c, (void*)a);
-
-        fflush(stdin);
-    }
-
-    mostrar_aluno(a);
-
-
-    int matricula, op, loop=1;
+    int i, num, matricula, op, loop=1;
     char nome[15];
     float media;
+    
+    printf("Entre com o numero de alunos: ");
+    scanf("%d", &num);
 
-    while(loop != 0)
+    c = criar_colecao(num);
+    
+    if(c != NULL)
     {
 
-        printf("-- Pesquisar por --\n");
-        printf("(1) matricula\t (2)nome\t (3)media");
-        scanf("%d", &op);
-
-        switch(op)
+        printf("\t-- Inserir Alunos --\n");
+        for(i=0; i<num; i++)
         {
-            case 1:
-                printf("Matricula -> ");
-                scanf("%d", &matricula);
-                pesquisar_matricula(a, matricula);
-                break;
-            case 2:
+            a = criar_aluno();
+            if(a != NULL)
+            {
+                a->matricula = i+1;
                 printf("Nome -> ");
-                scanf("%s", &nome);
-                pesquisar_nome(a, nome);
-                break;
-            case 3:
+                scanf("%s", &a->nome);
                 printf("Media -> ");
-                scanf("%f", &media);
-                pesquisar_media(a, media);
-                break;
-            default:
-                printf("opcao invalida!");
-                break;
+                scanf("%f", &a->media);
+                inserir_colecao(c, (void*)a);
+            }
+            else
+            {
+                printf("Impossivel fazer operacao!\n");
+                system("pause");
+                return 0;
+            }
+    
+            fflush(stdin);
         }
-        printf("Deseja fazer outra pesquisa?\n 1 - continua\t0 - termina");
-        scanf("%d", &loop);
+    
+        mostrar_aluno(a);
+    
+        while(loop != 0)
+        {
+    
+            printf("\n-- Pesquisar por --\n");
+            printf("(1)matricula\t(2)nome\t(3)media\n-> ");
+            scanf("%d", &op);
+    
+            switch(op)
+            {
+                case 1:
+                    printf("Matricula -> ");
+                    scanf("%d", &matricula);
+                    pesquisar_matricula(a, matricula);
+                    break;
+                case 2:
+                    printf("Nome -> ");
+                    scanf("%s", &nome);
+                    pesquisar_nome(a, nome);
+                    break;
+                case 3:
+                    printf("Media -> ");
+                    scanf("%f", &media);
+                    pesquisar_media(a, media);
+                    break;
+                default:
+                    printf("opcao invalida!");
+                    break;
+            }
+            printf("\nDeseja fazer outra pesquisa?\n 1 - continua\t0 - termina\n-> ");
+            scanf("%d", &loop);
+        }
+    
+        loop = 1;
+    
+        while(loop != 0)
+        {
+            printf("\n\t-- Remover por --\n");
+            printf("(1)matricula\t (2)nome\t (3)media\n->");
+            scanf("%d", &op);
+    
+            switch(op)
+            {
+                case 1:
+                    printf("Matricula -> ");
+                    scanf("%d", &matricula);
+                    remover_matricula(a, matricula);
+                    break;
+                case 2:
+                    printf("Nome -> ");
+                    scanf("%s", &nome);
+                    remover_nome(a, nome);
+                    break;
+                case 3:
+                    printf("Media -> ");
+                    scanf("%f", &media);
+                    remover_media(a, media);
+                    break;
+                default:
+                    printf("opcao invalida!");
+                    break;
+            }
+            printf("\nDeseja fazer outra pesquisa?\n 1 - continua\t0 - termina\n-> ");
+            scanf("%d", &loop);
+        }
+    
+        mostrar_aluno(a);
     }
-
-    loop = 1;
-
-    while(loop != 0)
+    else
     {
-        printf("-- Remover por --\n");
-        printf("(1) matricula\t (2)nome\t (3)media");
-        scanf("%d", &op);
-
-        switch(op)
-        {
-            case 1:
-                printf("Matricula -> ");
-                scanf("%d", &matricula);
-                remover_matricula(a, matricula);
-                break;
-            case 2:
-                printf("Nome -> ");
-                scanf("%s", &nome);
-                remover_nome(a, nome);
-                break;
-            case 3:
-                printf("Media -> ");
-                scanf("%f", &media);
-                remover_media(a, media);
-                break;
-            default:
-                printf("opcao invalida!");
-                break;
-        }
-        printf("Deseja fazer outra pesquisa?\n 1 - continua\t0 - termina");
-        scanf("%d", &loop);
+        printf("Impossivel fazer operacao!\n");
+        system("pause");
+        return 0;
     }
-
-    mostrar_aluno(a);
+    
+    system("pause");
+    return 0;
 }
