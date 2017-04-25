@@ -4,7 +4,7 @@
 
 int **aloca_matriz(int l, int c)
 {
-    int i, **aux;
+    int i, j, **aux;
 
     aux = (int**)malloc(l*sizeof(int*));
     if(aux != NULL)
@@ -12,6 +12,10 @@ int **aloca_matriz(int l, int c)
         for(i=0; i<l; i++)
         {
             aux[i] = (int*)malloc(c*sizeof(int));
+            for(j=0; j<c; j++)
+            {
+                aux[i][j] = 0;
+            }
         }
     }
 

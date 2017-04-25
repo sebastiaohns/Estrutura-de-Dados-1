@@ -4,8 +4,7 @@
 #define FALSE 0;
 
 typedef struct _Fila_{
-    int max;
-    int tam;
+    int max, tam, beg, end;
     void** vet;
 }Fila;
 
@@ -14,16 +13,9 @@ int destruir_fila(Fila *f);
 int inserir_fila(Fila *f, void* x);
 int remove_fila(Fila *f);
 
-void main(void)
-{
-
-}
-
 Fila* criar_fila(int max)
 {
     Fila *f;
-
-
 
     if(max > 0)
     {
@@ -35,6 +27,8 @@ Fila* criar_fila(int max)
             {
                 f->max = max;
                 f->tam = 0;
+                f->beg = 0;
+                f->end = 0;
                 return f;
             }
         }
@@ -60,8 +54,13 @@ int inserir_fila(Fila *f, void* x)
 {
     if(f != NULL && f->vet != NULL && f->tam < f->max -1)
     {
-        f->vet[f->tam] = x;
+        f->vet = x;
         f->tam++;
+
+        if(f->end < f->tam -1)
+            f->end++;
+        else
+            f->end = 0;
 
         return TRUE;
     }
@@ -84,6 +83,11 @@ int remove_fila(Fila *f)
         }
 
         f->tam--;
+
+        if(f->beg < f->tam -1)
+            f->beg++;
+        else
+            f->beg = 0;
 
         return TRUE;
     }
