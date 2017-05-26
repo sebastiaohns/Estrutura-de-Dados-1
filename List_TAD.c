@@ -53,6 +53,17 @@ int inserir(list *l, void* data)
     return 0;
 }
 
+int cmp(void* a, void* b) {
+	int* pA = a;
+	int* pB = b;
+
+	if(*pA == *pB) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 int pesquisar(list *l, void* data)
 {
     if(l != NULL)
@@ -67,12 +78,16 @@ int pesquisar(list *l, void* data)
             while(aux->next != NULL)
             {
                 list_data = (int)aux->data;
-                printf("[list->data] = %d\n", list_data);
                 if(list_data == dado)
                 {
                     return 1;
                 }
                 aux = aux->next;
+            }
+            list_data = (int)aux->data;
+            if(list_data == dado)
+            {
+                return 1;
             }
         }
         else
@@ -174,4 +189,13 @@ int compara_listas(list *l1, list *l2)
     }
     return 0;
 
+}
+
+int vazio(list *l)
+{
+    if(l != NULL && l->first != NULL)
+    {
+        return 1;
+    }
+    return 0;
 }
