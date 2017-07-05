@@ -1,136 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <string.h>
 
-int** aloca_matriz(int l, int c);
-void preenche_matriz(int** aux, int l, int c);
-void mostra_matriz(int** aux, int l, int c);
-void multiplica_matriz(int** a, int** b, int** c, int l1, int c1, int l2, int c2);
-
-int main()
+typedef struct Tnode
 {
-    int lA, cA, lB, cB, **a, **b, **c;
+    char data[2];
+    struct Tnode* l;
+    struct Tnode* r;
+}tnode;
 
-    printf("Linha da Matriz A: ");
-    scanf("%d", &lA);
-    printf("Coluna da Matriz A: ");
-    scanf("%d", &cA);
-    printf("Linha da Matriz B: ");
-    scanf("%d", &lB);
-    printf("Coluna da Matriz B: ");
-    scanf("%d", &cB);
-
-    a = aloca_matriz(lA, cA);
-    b = aloca_matriz(lB, cB);
-    if(a != NULL && b != NULL)
-    {
-        preenche_matriz(a, lA, cA);
-        mostra_matriz(a, lA, cA);
-        preenche_matriz(b, lB, cB);
-        mostra_matriz(b, lB, cB);
-
-        c = aloca_matriz(lA, cB);
-        if(c != NULL)
-        {
-            multiplica_matriz(a, b, c, lA, cA, lB, cB);
-            mostra_matriz(c, lA, cB);
-        }
-        else
-        {
-            printf("--- Erro ao multiplicar matrizes ---");
-        }
-
-    }
-    else
-    {
-        printf("--- Erro ao criar matriz ---");
-    }
-
-    return 0;
-}
-
-int** aloca_matriz(int l, int c)
+tnode* criar()
 {
-    int i, j, **aux;
-
-    aux = (int**)malloc(l*sizeof(int*));
-
-    if(aux != NULL)
-    {
-        for(i=0; i<l; i++)
-        {
-            aux[i] = (int*)malloc(l*sizeof(int));
-            if(aux[i] != NULL)
-            {
-                for(j=0; j<c; j++)
-                {
-                    aux[i][j] = 0;
-                }
-            }
-            else
-            {
-                free(aux);
-                return NULL;
-            }
-
-        }
-        printf("--- Matriz criada ---\n\n");
-        return aux;
-    }
-
-    free(aux);
     return NULL;
 }
 
-void preenche_matriz(int** aux, int l, int c)
+void insert(tnode** t, char str[])
 {
-    int i, j;
-
-    printf("--- Preencha a matriz ---\n");
-    for(i=0; i<l; i++)
+    if(*t == NULL)
     {
-        for(j=0; j<c; j++)
+        *t = (tnode*)malloc(sizeof(tnode));
+        (*t)->r = NULL;
+        (*t)->l = NULL;
+        strcpy((*t)->data, str);
+    }
+    else
+    {
+        if(strcasecmp((*t)->data,str)>0)
         {
-            printf("[%d][%d] -> ", i+1, j+1);
-            scanf("%d", &aux[i][j]);
+            insert (&(*t)->r, str);
+        }
+        if(strcasecmp((*t)->data,str)<0)
+        {
+            insert (&(*t)->l, str);
         }
     }
 }
 
-void mostra_matriz(int** aux, int l, int c)
+char* abPreOrdem(tnode *t)
 {
-    int i, j;
-
-    printf("--- Matriz ---\n");
-    for(i=0; i<l; i++)
+    static char str[5];
+    if(t != NULL)
     {
-        for(j=0; j<c; j++)
-        {
-            printf("%d ", aux[i][j]);
-        }
-        printf("\n");
+        strcat(str, t->data);
+        abPreOrdem(t->l);
+        abPreOrdem(t->r);
+        fflush(stdin);
     }
+    return str;
 }
 
-void multiplica_matriz(int** a, int** b, int** c, int lA, int cA, int lB, int cB)
+
+void main(void)
 {
-    int i, j, k;
+    int i, h, x=1, v[]={ 8, 3, 1, 6, 4, 7, 10, 14, 13};
+    char str[2], str2[5];
 
-    if(cA == lB)
-    {
-        if(c != NULL)
-        {
-            for(i=0; i<lA; i++)
-            {
-                for(j=0; j<cB; j++)
-                {
-                    for(k=0; k<lB; k++)
-                    {
-                        c[i][j] += a[i][k]*b[k][j];
-                    }
-                }
-            }
-        }
-    }
+    tnode *t;
 
+    t = criar();
+    strcpy(str, "a");
+    insert(&t, str);
+    strcpy(str, "b");
+    insert(&t, str);
+    strcpy(str, "c");
+    insert(&t, str);
+
+    strcpy(str2, abPreOrdem(t));
+
+    printf("%s", str2);
+
+    abPreOrdem(t);
 }
+
